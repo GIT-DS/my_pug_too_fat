@@ -11,11 +11,11 @@ class Player{
         this.dy = -10;
         this.currentY = y;
         this.originalDy = -10;
-        this.maxHeight = this.currentY - 200;
+        this.maxHeight = this.currentY - 500;
         this.width = width;
         this.height = height;
-        this.friction = 0.9;
-        this.gravity = 6.81;
+        this.friction = 0.4;
+        this.gravity = 9.81;
         // this.maxHeight = 50;
         this.maxVel = 5;
         this.color = color
@@ -36,25 +36,31 @@ class Player{
         } else if (right){
             this.x += this.dx;
         }
-        // if (this.onPlatform){
-            if (space && this.onPlatform){
-                // setInterval(()=>{this.onPlatform = false}, 1000)
+        if (this.onPlatform && space){
+            this.moving = true;
+        }
+            if (this.moving){
+                // this.moving = true;
                 if (this.y <= this.maxHeight){
+                    // this.moving = false;
                     this.dy += this.gravity;
+                    // space = false;
+                    // this.moving = false;
                 } else {
-                    this.dy *= this.friction
+                    this.dy += this.friction;
                 }
                 this.y += this.dy;
-            } else if (!this.onPlatform){
-                this.dy += this.gravity * this.friction;
-                this.y += this.dy;
-            }
+            } 
+            // else if (!this.onPlatform){
+            //     this.dy += this.gravity * this.friction;
+            //     this.y += this.dy;
+            // }
         // }
         this.draw();
     }
 
     bindInputs(){
-        document.addEventListener("keydown", function(event){
+        const keyDown = document.addEventListener("keydown", function(event){
             if(event.key === "ArrowRight" || event.key === "d"){
                 right = true;
             } else if(event.key === "ArrowLeft" || event.key === "a"){
@@ -62,6 +68,7 @@ class Player{
             } else if(event.key === " "){
                 space = true;
             }
+            setTimeout(keyDown, 40);
         });
 
         document.addEventListener("keyup", function(event){

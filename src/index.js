@@ -17,15 +17,40 @@ document.addEventListener("DOMContentLoaded", () => {
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
-    player = new Player(100, canvas.height - 200, 100, 100);
-    floor = new Object(0, canvas.height - 50, canvas.width, 50)    
+    player = new Player(100, canvas.height - 150, 100, 100);
+    floor = new Object(0, canvas.height - 50, canvas.width, 50);
+    plat1 = new Object( 100, canvas.height - 200, 100, 50);    
     objects.push(floor)
+    objects.push(plat1)
     
     window.setInterval(drawAll, 20);
 });
   
 
 
+
+function objectCollision(player, object){
+    if(player.y + player.height >= object.y){
+        // player.dy = 0;
+        player.y = object.y - player.height;
+        // player.dy = 0
+        player.dy = player.originalDy;
+        player.onPlatform = true;
+    } else {
+        player.onPlatform = false;
+    }
+}
+
+function drawAll(){
+    window.context.clearRect(0,0, canvas.width, canvas.height)
+    player.animate();
+    objects.forEach(object => {
+        object.draw()
+        
+        objectCollision(player, object);
+    })
+    
+}
 // function addTwoPlatforms(){
 //     let object = new Object(0,300,100,100,'black')
 //     objects.push(object)
@@ -47,26 +72,3 @@ document.addEventListener("DOMContentLoaded", () => {
 //         objects.push(newObject);
 //     }
 // }
-
-function objectCollision(player, object){
-    if(player.y + player.height >= object.y){
-        // player.dy = 0;
-        player.y = object.y - player.height;
-        // player.dy = 0
-        player.dy = player.originalDy;
-        player.onPlatform = true;
-    } else {
-        player.onPlatform = false;
-    }
-}
-
-function drawAll(){
-    window.context.clearRect(0,0, canvas.width, canvas.height)
-    player.animate();
-    objects.forEach(object => {
-        object.draw()
-    
-        objectCollision(player, object);
-    })
-
-}
