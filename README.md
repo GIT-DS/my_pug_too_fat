@@ -2,14 +2,14 @@
 
 ## Background
 
-The point of this game is to give my chonky pug some exercise, but jumping form platform to platform. Each platform is procedurally generated to ensure it's somewhere within the parabolic curve of my pug's jump. Sounds fun right? SIKE! This game is designed to be frustrating. There will be some *fun* surprises along the way : ^ ) . If you mess up and fall, you could potentially make my pug fall all the way to the bottom. 
+The point of this game is to give my chonky pug some exercise by jumping from platform to platform. Each platform is procedurally generated to ensure it's somewhere within the parabolic curve of my pug's jump. Sounds fun right? SIKE! This game is designed to be frustrating. There will be some *fun* surprises along the way : ^ ) . If you mess up and fall, you could potentially make my pug fall all the way to the bottom. 
 
 
 ## Functionality and MVP
 
 This application will:
 
-- Generate a random map with a map generating algorithm 
+- Generate a random map
 - Users will attempt to climb up
 - When users miss a platform, the user will fall all the way to the bottom, unless another platform catches them
 
