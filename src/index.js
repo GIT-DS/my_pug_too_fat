@@ -30,7 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function objectCollision(player, object){
-    if(player.y + player.height >= object.y){
+    // console.log(inRangeX(player, object))
+    if(player.y + player.height >= object.y &&
+        inRangeX(player, object)){
         // player.dy = 0;
         player.y = object.y - player.height;
         // player.dy = 0
@@ -51,6 +53,25 @@ function drawAll(){
     })
     
 }
+
+function inRangeX(player, object){
+    let playerStart = player.x;
+    let playerEnd = player.x + player.width;
+    let objectStart = object.x;
+    let objectEnd = object.x + object.width;
+
+    if (playerStart >= objectStart && playerStart <= objectEnd){
+        return true;
+    } else if (playerEnd >= objectStart && playerEnd <= objectEnd){
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
 // function addTwoPlatforms(){
 //     let object = new Object(0,300,100,100,'black')
 //     objects.push(object)
