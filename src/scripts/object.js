@@ -29,6 +29,15 @@ class Object {
             if(y > maxHeight || y < 0){
                 continue
             }
+
+            if(x < 0 || x > 600){ // ensuring platform is in the map x axis;
+                continue
+            }
+
+            if(y < 5){ // ensuring platform is at least 5 higher than the previous
+                continue;
+            }
+
             pos.push([x, y])
         }
         let mid = Math.floor(pos.length / 2)
