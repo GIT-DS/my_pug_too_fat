@@ -1,13 +1,13 @@
-// const Object = require('./scripts/object.js')
+const Object = require('./scripts/object.js')
 const Player = require('./scripts/player.js')
 
 // input variables
 
 
-// let objects = [];
+let objects = [];
 
 let player;
-
+let floor;
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -17,20 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
-    player = new Player(100, canvas.height - 100, 100, 100);
-    // if (objects.length < 10){s
-    //     console.log('making platforms')
-        // addTwoPlatforms()
-
+    player = new Player(100, canvas.height - 200, 100, 100);
+    floor = new Object(0, canvas.height - 50, canvas.width, 50)    
+    objects.push(floor)
     
     window.setInterval(drawAll, 20);
-    // creating object
-
-    // setting key binds;
-
-    //drawing all loop
-    
-    // creating player
 });
   
 
@@ -57,9 +48,25 @@ document.addEventListener("DOMContentLoaded", () => {
 //     }
 // }
 
+function objectCollision(player, object){
+    if(player.y + player.height >= object.y){
+        // player.dy = 0;
+        player.y = object.y - player.height;
+        // player.dy = 0
+        player.dy = player.originalDy;
+        player.onPlatform = true;
+    } else {
+        player.onPlatform = false;
+    }
+}
 
 function drawAll(){
-    // objects.forEach(object => object.draw())
-
+    window.context.clearRect(0,0, canvas.width, canvas.height)
     player.animate();
+    objects.forEach(object => {
+        object.draw()
+    
+        objectCollision(player, object);
+    })
+
 }
