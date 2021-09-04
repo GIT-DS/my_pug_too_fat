@@ -11,7 +11,7 @@ class Player{
         this.dy = -10;
         this.currentY = y;
         this.originalDy = -10;
-        this.maxHeight = this.currentY - 500;
+        this.maxHeight = this.y - 500;
         this.width = width;
         this.height = height;
         this.friction = 0.4;
@@ -41,14 +41,14 @@ class Player{
         }
             if (this.moving){
                 // this.moving = true;
-                if (this.y <= this.maxHeight){
+                // if (this.y <= this.maxHeight){
                     // this.moving = false;
                     this.dy += this.gravity;
                     // space = false;
-                    // this.moving = false;
+                    this.moving = false;
                 } else {
                     this.dy += this.friction;
-                }
+                // }
                 this.y += this.dy;
             } 
             // else if (!this.onPlatform){

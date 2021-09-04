@@ -17,11 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
-    player = new Player(100, canvas.height - 150, 100, 100);
+    player = new Player(300, canvas.height - 50, 100, 100);
     floor = new Object(0, canvas.height - 50, canvas.width, 50);
     plat1 = new Object( 100, canvas.height - 200, 100, 50);    
+    plat2 = new Object( 500, canvas.height - 400, 100, 50);    
+    plat3 = new Object( 600, canvas.height - 600, 100, 50);    
     objects.push(floor)
     objects.push(plat1)
+    objects.push(plat2)
+    objects.push(plat3)
     
     window.setInterval(drawAll, 20);
 });
@@ -31,13 +35,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function objectCollision(player, object){
     // console.log(inRangeX(player, object))
-    if(player.y + player.height >= object.y &&
-        inRangeX(player, object)){
+
+    // if (collisionTop(player, object) && inRangeX(player, object)){
+    //     if (collisionRight(player,object)){
+    if( inRangeX(player, object) && inRangeY(player, object)){
         // player.dy = 0;
+        player.dy = player.originalDy;
         player.y = object.y - player.height;
         // player.dy = 0
-        player.dy = player.originalDy;
         player.onPlatform = true;
+        
     } else {
         player.onPlatform = false;
     }
@@ -54,20 +61,78 @@ function drawAll(){
     
 }
 
+// function collisionRight(player, object){
+//     if (player.x <= object.x + object.width ){
+//         return true;
+//     }
+// }
+
+
+
+function collisionTop(player, object){
+    if (player.y + player.height >= object.y){
+        return true;
+    }
+    return false;
+}
+
+// function collisionBot(player, object){
+//     if (player.y <= object.height + object.y){
+//         return true;
+//     }
+//     return false;
+// }
+
+
+
+// function collision(player, object){
+//     if (player.x <= object.x + object.width || 
+//         player.x + player.width >= object.x)
+// }
+
 function inRangeX(player, object){
     let playerStart = player.x;
     let playerEnd = player.x + player.width;
     let objectStart = object.x;
     let objectEnd = object.x + object.width;
 
-    if (playerStart >= objectStart && playerStart <= objectEnd){
-        return true;
-    } else if (playerEnd >= objectStart && playerEnd <= objectEnd){
-        return true;
-    }
-    return false;
+    // if (playerStart >= objectStart && playerEnd >= objectEnd && 
+    //     playerStart <= objectEnd && playerEnd >= objectStart
+    //     ||
+    //     playerEnd >= objectStart && playerEnd <= objectEnd){
+    //     return true;
+    // }
+
+    if ((playerStart < objectStart && playerStart < objectEnd &&
+        playerEnd < objectStart && playerEnd < objectEnd) || 
+        (playerStart > objectStart && playerStart > objectEnd &&
+        playerEnd > objectStart && playerEnd > objectEnd)){
+            return false;
+        }
+    return true;
 }
 
+function inRangeY(player, object){
+    let playerStart = player.y;
+    let playerEnd = player.y + player.height;
+    let objectStart = object.y;
+    let objectEnd = object.y + object.height;
+
+    // if (playerStart >= objectStart && playerEnd >= objectEnd && 
+    //     playerStart <= objectEnd && playerEnd >= objectStart
+    //     ||
+    //     playerEnd >= objectStart && playerEnd <= objectEnd){
+    //     return true;
+    // }
+
+    if ((playerStart < objectStart && playerStart < objectEnd &&
+        playerEnd < objectStart && playerEnd < objectEnd) || 
+        (playerStart > objectStart && playerStart > objectEnd &&
+        playerEnd > objectStart && playerEnd > objectEnd)){
+            return false;
+        }
+    return true;
+}
 
 
 
