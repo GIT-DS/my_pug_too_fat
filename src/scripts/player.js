@@ -7,15 +7,17 @@ class Player{
     constructor(x, y, width, height, color){
         this.x = x;
         this.y = y;
-        this.dx = 15;
-        this.dy = -10;
+        this.dx = 1;
+        this.dy = 6;
+        this.originalDx = 1
+        this.maxDx = 3;
         this.currentY = y;
-        this.originalDy = -10;
-        this.maxHeight = this.y - 500;
+        this.originalDy = 6;
+        this.maxHeight = this.y - 200;
         this.width = width;
         this.height = height;
-        this.friction = 0.4;
-        this.gravity = 9.81;
+        this.friction = 0.1;
+        this.gravity = 0.1;
         // this.maxHeight = 50;
         this.maxVel = 5;
         this.color = color
@@ -32,25 +34,33 @@ class Player{
 
     animate(){
         if (left){
+            if (this.dx === 0) this.dx = this.originalDx;
+            if (this.dx < this.maxDx){
+                this.dx += this.friction;
+            }
             this.x -= this.dx;
         } else if (right){
+            if (this.dx < this.maxDx){
+            this.dx += this.friction;
+            }
             this.x += this.dx;
+        } else if (!left || !right){
+            this.dx = this.originalDx;
+        } else if (!right){
+            this.dx = this.originalDx;
         }
-        if (this.onPlatform && space){
-            this.moving = true;
-        }
-            if (this.moving){
+        
                 // this.moving = true;
                 // if (this.y <= this.maxHeight){
                     // this.moving = false;
-                    this.dy += this.gravity;
+                    // this.dy *= -this.dy + this.gravity;
                     // space = false;
-                    this.moving = false;
-                } else {
-                    this.dy += this.friction;
-                // }
+                    // this.moving = false;
+                // } else {
+                this.dy += this.friction;
+                // 
                 this.y += this.dy;
-            } 
+            // } 
             // else if (!this.onPlatform){
             //     this.dy += this.gravity * this.friction;
             //     this.y += this.dy;
@@ -65,10 +75,7 @@ class Player{
                 right = true;
             } else if(event.key === "ArrowLeft" || event.key === "a"){
                 left = true;
-            } else if(event.key === " "){
-                space = true;
             }
-            setTimeout(keyDown, 40);
         });
 
         document.addEventListener("keyup", function(event){
@@ -76,8 +83,6 @@ class Player{
                 right = false;
             } else if(event.key === "ArrowLeft" || event.key === "a"){
                 left = false;
-            } else if(event.key === " " ){
-                space = false
             }
         })
     }

@@ -5,6 +5,7 @@ const Player = require('./scripts/player.js')
 
 
 let objects = [];
+let fullObjects = [];
 
 let player;
 let floor;
@@ -17,43 +18,51 @@ document.addEventListener("DOMContentLoaded", () => {
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
-    player = new Player(300, canvas.height - 50, 100, 100);
-    floor = new Object(0, canvas.height - 50, canvas.width, 50);
-    plat1 = new Object( 100, canvas.height - 200, 100, 50);    
-    plat2 = new Object( 500, canvas.height - 400, 100, 50);    
-    plat3 = new Object( 600, canvas.height - 600, 100, 50);    
-    objects.push(floor)
-    objects.push(plat1)
-    objects.push(plat2)
-    objects.push(plat3)
+    player = new Player(300, canvas.height - 500, 200, 100);
+    floor = new Object(0, canvas.height - 50, canvas.width, 50, "black", );
+    plat1 = new Object( 100, canvas.height - 100, 100, 10, "black");     
+    objects.push(floor);
+    objects.push(plat1);
+    addPlatform();
+    let lastObject = objects[objects.length - 1]
+    // console.log(lastObject)
+    // if(player.y + player.height <= objects[objects.length - 1].y){
+    //     setInterval(addPlatform(), 5000);
+    // }
     
-    window.setInterval(drawAll, 20);
+    window.setInterval(drawAll, 10);
 });
   
 
 
 
 function objectCollision(player, object){
-    // console.log(inRangeX(player, object))
-
-    // if (collisionTop(player, object) && inRangeX(player, object)){
-    //     if (collisionRight(player,object)){
-    if( inRangeX(player, object) && inRangeY(player, object)){
-        // player.dy = 0;
-        player.dy = player.originalDy;
-        player.y = object.y - player.height;
-        // player.dy = 0
-        player.onPlatform = true;
-        
-    } else {
-        player.onPlatform = false;
+    if( inRangeY(player, object)){
+        // player.dx = -player.dx
+        if (inRangeX(player, object)){
+            player.dy = -player.originalDy;
+        }
     }
+
 }
 
 function drawAll(){
     window.context.clearRect(0,0, canvas.width, canvas.height)
+    if (player.y < 0){
+        objects = objects.slice(objects.length - 1);
+        addPlatform()
+        player.y += canvas.height;
+    }
+    if (player.y > canvas.height){
+        objects = objects.slice(objects.length - 1);
+        addPlatform()
+        player.y = 0;
+    }
     player.animate();
     objects.forEach(object => {
+        if (object.y < 0){
+            object.y += canvas.height;
+        }
         object.draw()
         
         objectCollision(player, object);
@@ -61,48 +70,48 @@ function drawAll(){
     
 }
 
-// function collisionRight(player, object){
-//     if (player.x <= object.x + object.width ){
-//         return true;
-//     }
-// }
-
-
 
 function collisionTop(player, object){
-    if (player.y + player.height >= object.y){
+    let playerStart = player.y;
+    let playerEnd = player.y + player.height;
+    let objectStart = object.y;
+    let objectEnd = object.y + object.height;
+    if (playerEnd >= objectStart && objectStart >= playerStart){
+        
         return true;
     }
     return false;
 }
 
-// function collisionBot(player, object){
-//     if (player.y <= object.height + object.y){
-//         return true;
-//     }
-//     return false;
-// }
+
+function collisionBot(player, object){
+    let playerStart = player.y;
+    let objectEnd = object.y + object.height;
+    if (playerStart < objectEnd){
+        return true;aa
+    }
+    return false;
+}
 
 
 
-// function collision(player, object){
-//     if (player.x <= object.x + object.width || 
-//         player.x + player.width >= object.x)
-// }
+function collideSide(player, object){
+    let playerStart = player.x;
+    let playerEnd = player.x + player.width;
+    let objectStart = object.x;
+    let objectEnd = object.x + object.width;
+    let distanceRight = objectStart - playerStart
+    if (distanceRight <= 0){
+        return true;
+    }
+    return false;
+}
 
 function inRangeX(player, object){
     let playerStart = player.x;
     let playerEnd = player.x + player.width;
     let objectStart = object.x;
     let objectEnd = object.x + object.width;
-
-    // if (playerStart >= objectStart && playerEnd >= objectEnd && 
-    //     playerStart <= objectEnd && playerEnd >= objectStart
-    //     ||
-    //     playerEnd >= objectStart && playerEnd <= objectEnd){
-    //     return true;
-    // }
-
     if ((playerStart < objectStart && playerStart < objectEnd &&
         playerEnd < objectStart && playerEnd < objectEnd) || 
         (playerStart > objectStart && playerStart > objectEnd &&
@@ -118,13 +127,6 @@ function inRangeY(player, object){
     let objectStart = object.y;
     let objectEnd = object.y + object.height;
 
-    // if (playerStart >= objectStart && playerEnd >= objectEnd && 
-    //     playerStart <= objectEnd && playerEnd >= objectStart
-    //     ||
-    //     playerEnd >= objectStart && playerEnd <= objectEnd){
-    //     return true;
-    // }
-
     if ((playerStart < objectStart && playerStart < objectEnd &&
         playerEnd < objectStart && playerEnd < objectEnd) || 
         (playerStart > objectStart && playerStart > objectEnd &&
@@ -137,24 +139,21 @@ function inRangeY(player, object){
 
 
 
-// function addTwoPlatforms(){
-//     let object = new Object(0,300,100,100,'black')
-//     objects.push(object)
-//     for(let i = 0; i < 2; i++){
-//         let lastObject = objects[objects.length - 1]
-//         let x = lastObject.x; // last object's x value 
-//         let y = lastObject.y; // last objects's y value
-//         let width = lastObject.width; // last object's width
-//         let height = lastObject.height;
+function addPlatform(){
+    for(let i = 0; i < Math.floor(canvas.height / (100 + 10)); i++){
+        let lastObject = objects[objects.length - 1]
 
-//         let randX = Math.random()* (x + width) // random starting position based on last objects x and width
-
-//         let newPosArray = lastObject.validPosArray(randX, y, 1, 1) // need to refactor
-//         let idx = Math.floor(Math.random()*newPosArray.length) // selecting a random idex in newPosArray
-//         let newPos = newPosArray[idx]
-//         let randomWidth = Math.random()*100 + difficulty; // need to refactor difficulty
-
-//         let newObject = new Object(newPos[0],new[pos[y]], randomWidth, height)
-//         objects.push(newObject);
-//     }
-// }
+        let distance = Math.random()*500;
+        let rand = Math.random() < 0.5 ? -1 : 1;
+        let x = (lastObject.x + distance) * rand;
+        if (x >= canvas.width){
+            x = canvas.width - (x - canvas.width);
+        } else if (lastObject.x + lastObject.width < 0 ){
+            x = 100 + x;
+        }
+        let y = lastObject.y - 100;
+        let newObj = new Object(x, y, 100, 10, "black")
+        objects.push(newObj);
+        console.log(objects);
+    }
+}
