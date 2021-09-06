@@ -1,11 +1,11 @@
 // const Object = require('./scripts/object.js')
 const Player = require('./scripts/player.js')
 const Frames = require('./scripts/frame.js')
+let titanic = new Audio('src/titanic.mp3')
 // const PugSprite = require('./img/pug.png')
 // input variables
 
 
-let objects = [];
 let currentFrame = 0;
 // let lastFramePlat 
 let frames = [];
@@ -34,8 +34,6 @@ const backgrounds = [
 let backgroundIdx = 0;
 
 let player;
-let floor;
-
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById('game');
@@ -93,6 +91,13 @@ function drawAll(){
         objectCollision(player, plat)
     })
     collideSide(player)
+
+    if(player.dy > 25) {
+        titanic.currentTime = 2;
+        titanic.play();
+    }
+
+
     player.animate();
     
 }

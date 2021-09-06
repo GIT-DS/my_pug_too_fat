@@ -1,5 +1,5 @@
 const Object = require('./object.js')
-const Background = require('./background.js')
+// const Background = require('./background.js')
 
 class Frame{
     constructor(number, lastPlat = ""){

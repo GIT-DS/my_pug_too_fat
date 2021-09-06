@@ -56,8 +56,6 @@ class Player{
             this.currentFrame++;
             this.timer = 5;
         }
-        // setInterval(this.increaseFrame, 1000);
-        // setTimeout(this.increaseFrame, 1000);
     }
     
     pugStep(){
