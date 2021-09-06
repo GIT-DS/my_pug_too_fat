@@ -13,7 +13,12 @@ class Object {
 
     draw (){
         context.fillStyle = this.color;
+        context.lineWidth = 5;
+        context.strokeStyle = "black"
+        // context.shadowColor = 'blue';
+        // context.shadowBlur = 20;
         context.fillRect(this.x, this.y, this.width, this.height);   
+        context.strokeRect(this.x, this.y, this.width, this.height);
     }
 
     validPosArray(x, y, dx, dy, maxHeight){
