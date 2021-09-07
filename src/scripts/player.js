@@ -9,7 +9,7 @@ class Player{
         this.dx = 3;
         this.dy = 6;
         this.originalDx = 1
-        this.maxDx = 13;
+        this.maxDx = 10;
         this.currentY = y;
         this.originalDy = 6;
         this.maxHeight = this.y - 200;

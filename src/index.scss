@@ -1,7 +1,13 @@
-canvas {
-    background: url('./skyscraper.jpg')
-}
 body{
     margin: 0;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+canvas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

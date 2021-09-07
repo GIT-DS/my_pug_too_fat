@@ -2,6 +2,9 @@
 const Player = require('./scripts/player.js')
 const Frames = require('./scripts/frame.js')
 let titanic = new Audio('src/titanic.mp3')
+// const video = document.querySelector('video');
+// const wind = require('./scripts/windCircles.js');
+const Wind = require('./scripts/wind.js');
 // const PugSprite = require('./img/pug.png')
 // input variables
 
@@ -34,6 +37,8 @@ const backgrounds = [
 let backgroundIdx = 0;
 
 let player;
+let falls = 0;
+let falling = false;
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById('game');
@@ -49,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     player = new Player(300, canvas.height - 500, pug);
     firstFrame = new Frames(0,backgrounds[0]);
     frames.push(firstFrame);
+    wind = new Wind();
     
     window.setInterval(drawAll, 10);
 });
@@ -67,38 +73,53 @@ function objectCollision(player, object){
 }
 
 function drawAll(){
-    window.context.clearRect(0,0, canvas.width, canvas.height)
-    window.context.drawImage(background,0,0, canvas.width, 1000)
-    if (player.y < 0){
-        backgroundIdx += 1
-        background.src = backgrounds[backgroundIdx % backgrounds.length]
-        let lastFramePlats = getLastFrame(currentFrame).plats;
-        let lastPlat = lastFramePlats[lastFramePlats.length - 1];
-        currentFrame += 1;
-        if (!frames[currentFrame]){
-            newFrame = new Frames(currentFrame, lastPlat);
-            frames.push(newFrame)
+    // if (currentFrame > backgrounds.indexOf("src/img/last.jpg")){
+    //     window.context.clearRect(0,0, canvas.width, canvas.height)
+    //     window.context.drawImage(video, 0, 0, canvas.width, 1000);
+    // } else {
+        window.context.clearRect(0,0, canvas.width, canvas.height)
+        window.context.font = "30px Arial";
+        
+        
+        window.context.drawImage(background,0,0, canvas.width, 1000)
+        if (player.y < 0){
+            backgroundIdx += 1
+            background.src = backgrounds[backgroundIdx % backgrounds.length]
+            let lastFramePlats = getLastFrame(currentFrame).plats;
+            let lastPlat = lastFramePlats[lastFramePlats.length - 1];
+            currentFrame += 1;
+            if (!frames[currentFrame]){
+                newFrame = new Frames(currentFrame, lastPlat);
+                frames.push(newFrame)
+            }
+            player.y += canvas.height;
+        } else if (player.y > canvas.height){
+            backgroundIdx -= 1;
+            background.src = backgrounds[backgroundIdx % backgrounds.length]
+            currentFrame -= 1;
+            player.y = 0;
         }
-        player.y += canvas.height;
-    } else if (player.y > canvas.height){
-        backgroundIdx -= 1;
-        background.src = backgrounds[backgroundIdx % backgrounds.length]
-        currentFrame -= 1;
-        player.y = 0;
-    }
-    frames[currentFrame].plats.forEach(plat => {
-        plat.draw()
-        objectCollision(player, plat)
-    })
-    collideSide(player)
+        frames[currentFrame].plats.forEach(plat => {
+            plat.draw()
+            objectCollision(player, plat)
+        })
+        collideSide(player)
+        
+        if(player.dy > 25) {
+            titanic.currentTime = 2;
+            titanic.play();
+            falls++;
 
-    if(player.dy > 25) {
-        titanic.currentTime = 2;
-        titanic.play();
-    }
+        }
+        
+        window.context.fillText("Fall Distance: ", 10, 50)
+        window.context.fillText(falls, 200, 50)
+        
+        player.animate();
+        wind.draw();
+    // }
 
 
-    player.animate();
     
 }
 
