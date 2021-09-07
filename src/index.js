@@ -126,7 +126,7 @@ function drawAll(){
     //     player.windEffect(wind.state);
     // }
 
-    if(currentFrame === 0){
+    if(currentFrame % 3 === 0){
         player.bindInputs();
     } else {
         player.reverseInputs();
@@ -172,12 +172,12 @@ function inRangeY(player, object){
 function collideSide(player){
     if (player.x + player.width + player.dy > canvas.width){
         player.x = canvas.width - player.width;
-        player.dx = player.originalDx;
+        // player.dx = player.originalDx;
         player.dx = -player.dx
     }
     if (player.x  + player.dx < 0 ){
         player.x = 0;
-        player.dx = player.originalDx
+        // player.dx = player.originalDx
         player.dx = -player.dx 
     }
 

@@ -16,7 +16,11 @@ class Player{
         this.friction = 0.1;
         this.maxVel = 5;
         this.wind = 5;
-        this.rev = false;
+        this.regKeysDown = (event) => {this.keyDown(event)}
+        this.regKeysUp = (event) => {this.keyUp(event)}
+        this.revKeysDown = (event) => {this.revKeyDown(event)}
+        this.revKeysUp = (event) => {this.revKeyUp(event)}
+
 
         // image stuff
         this.src = src;
@@ -110,12 +114,11 @@ class Player{
 
     bindInputs(){
         let that = this;
-        this.reverseInputs();
-        this.removeInputs();
+        document.removeEventListener("keydown", that.revKeysDown);
+        document.removeEventListener("keyup", that.revKeysUp);
 
-        document.addEventListener("keydown", event => that.keyDown(event))
-        document.addEventListener("keyup", event => that.keyUp(event))
-   
+        document.addEventListener("keydown", that.regKeysDown)
+        document.addEventListener("keyup", that.regKeysUp)
     }
     
     keyDown(event){
@@ -136,20 +139,14 @@ class Player{
 
     reverseInputs(){
         let that = this;
-        this.removeInputs();
+        document.removeEventListener("keydown", that.regKeysDown);
+        document.removeEventListener("keyup", that.regKeysUp);
 
-        document.addEventListener("keydown", event => that.revKeyDown(event))
-        document.addEventListener("keyup", event => that.revKeyUp(event))
-            
+        document.addEventListener("keydown", that.revKeysDown)
+        document.addEventListener("keyup",  that.revKeysUp)
+
     }
 
-    removeInputs(){
-        let that = this;
-        document.removeEventListener("keydown", that.keyDown);
-        document.removeEventListener("keyup", that.keyUp);
-        document.removeEventListener("keydown", that.revKeyDown);
-        document.removeEventListener("keyup", that.revKeyUp);
-    }
 
     revKeyDown(event){
         if(event.key === "ArrowRight" || event.key === "d"){
