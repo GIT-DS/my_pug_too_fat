@@ -6,8 +6,8 @@ class Frame{
         this.plats = [];
         this.number = number;
         this.lastPlat = lastPlat;
-        this.draw();
         this.addPlatform();
+        this.draw();
 
     }
     addPlatform(){

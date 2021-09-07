@@ -1,16 +1,23 @@
-// const Object = require('./scripts/object.js')
 const Player = require('./scripts/player.js')
 const Frames = require('./scripts/frame.js')
 let titanic = new Audio('src/titanic.mp3')
-// const video = document.querySelector('video');
-// const wind = require('./scripts/windCircles.js');
-const Wind = require('./scripts/wind.js');
-// const PugSprite = require('./img/pug.png')
-// input variables
 
+const WindCircle = require('./scripts/windCircles.js');
+const Wind = require('./scripts/wind.js');
+
+let pug = new Image();
+pug.src = "./src/scripts/small.png"
+
+let players = []
+pug.onload = ()=>{
+    console.log(players.length)
+    if (players.length != 1){
+        player = new Player(300, canvas.height - 500, pug);
+        players.push(player)
+    }
+}
 
 let currentFrame = 0;
-// let lastFramePlat 
 let frames = [];
 const backgrounds = [
     'src/img/1.jpg',
@@ -33,12 +40,14 @@ const backgrounds = [
     'src/img/20.jpg',
     'src/img/last.jpg'
 ]
-
+let background = new Image();
+background.src = backgrounds[0]
 let backgroundIdx = 0;
 
 let player;
 let falls = 0;
-let falling = false;
+let wind;
+let windCircle;
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById('game');
@@ -47,15 +56,18 @@ document.addEventListener("DOMContentLoaded", () => {
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
-    window.pug = new Image();
-    pug.src = "./src/scripts/small.png"
-    background = new Image();
-    background.src = backgrounds[0]
-    player = new Player(300, canvas.height - 500, pug);
-    firstFrame = new Frames(0,backgrounds[0]);
+    let pug = new Image();
+    pug.src = "./src/scripts/small.png" 
+    firstFrame = new Frames(0);
     frames.push(firstFrame);
     wind = new Wind();
-    
+    windCircle = new WindCircle(canvas.width / 2, canvas.height / 2, 1, 100);
+
+    // pug.onload = ()=>{
+
+    //     player = new Player(300, canvas.height - 500, pug);
+    // }
+
     window.setInterval(drawAll, 10);
 });
 
@@ -73,54 +85,51 @@ function objectCollision(player, object){
 }
 
 function drawAll(){
-    // if (currentFrame > backgrounds.indexOf("src/img/last.jpg")){
-    //     window.context.clearRect(0,0, canvas.width, canvas.height)
-    //     window.context.drawImage(video, 0, 0, canvas.width, 1000);
-    // } else {
-        window.context.clearRect(0,0, canvas.width, canvas.height)
-        window.context.font = "30px Arial";
-        
-        
-        window.context.drawImage(background,0,0, canvas.width, 1000)
-        if (player.y < 0){
-            backgroundIdx += 1
-            background.src = backgrounds[backgroundIdx % backgrounds.length]
-            let lastFramePlats = getLastFrame(currentFrame).plats;
-            let lastPlat = lastFramePlats[lastFramePlats.length - 1];
-            currentFrame += 1;
-            if (!frames[currentFrame]){
-                newFrame = new Frames(currentFrame, lastPlat);
-                frames.push(newFrame)
-            }
-            player.y += canvas.height;
-        } else if (player.y > canvas.height){
-            backgroundIdx -= 1;
-            background.src = backgrounds[backgroundIdx % backgrounds.length]
-            currentFrame -= 1;
-            player.y = 0;
-        }
-        frames[currentFrame].plats.forEach(plat => {
-            plat.draw()
-            objectCollision(player, plat)
-        })
-        collideSide(player)
-        
-        if(player.dy > 25) {
-            titanic.currentTime = 2;
-            titanic.play();
-            falls++;
 
-        }
-        
-        window.context.fillText("Fall Distance: ", 10, 50)
-        window.context.fillText(falls, 200, 50)
-        
-        player.animate();
-        wind.draw();
-    // }
-
-
+    window.context.clearRect(0,0, canvas.width, canvas.height)
+    window.context.font = "30px Arial";
     
+    
+    window.context.drawImage(background,0,0, canvas.width, canvas.height)
+
+    if (player.y < 0){
+        backgroundIdx += 1
+        background.src = backgrounds[backgroundIdx % backgrounds.length]
+        let lastFramePlats = getLastFrame(currentFrame).plats;
+        let lastPlat = lastFramePlats[lastFramePlats.length - 1];
+        currentFrame += 1;
+        if (!frames[currentFrame]){
+            newFrame = new Frames(currentFrame, lastPlat);
+            frames.push(newFrame)
+        }
+        player.y += canvas.height;
+    } else if (player.y > canvas.height){
+        backgroundIdx -= 1;
+        background.src = backgrounds[backgroundIdx % backgrounds.length]
+        currentFrame -= 1;
+        player.y = 0;
+    }
+    frames[currentFrame].plats.forEach(plat => {
+        plat.draw()
+        objectCollision(player, plat)
+    })
+
+    collideSide(player)
+
+    if(player.dy > 25) {
+        titanic.currentTime = 2;
+        titanic.play();
+        falls++;
+    }
+
+    window.context.fillText("Fall Distance: ", 10, 50)
+    window.context.fillText(falls, 200, 50)
+
+    if (currentFrame % 5 === 0){
+        wind.draw();
+        player.windEffect(wind.state);
+    }
+    player.animate();
 }
 
 function getLastFrame(currentFrame){
@@ -166,7 +175,7 @@ function collideSide(player){
     if (player.x  + player.dx < 0 ){
         player.x = 0;
         player.dx = player.originalDx
-        player.dx = -player.dx
+        player.dx = -player.dx 
     }
 
 }
