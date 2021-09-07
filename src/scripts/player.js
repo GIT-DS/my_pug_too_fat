@@ -16,6 +16,7 @@ class Player{
         this.friction = 0.1;
         this.maxVel = 5;
         this.wind = 5;
+        this.rev = false;
 
         // image stuff
         this.src = src;
@@ -34,8 +35,8 @@ class Player{
 
 
 
-        this.bindInputs();
-        this.draw();
+        // this.bindInputs();
+        // this.draw();
     }
 
     draw(){
@@ -43,6 +44,7 @@ class Player{
         context.fillRect(this.x, this.y, this.width, this.height);
         
         window.context.drawImage(this.src, this.srcX, this.srcY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.spriteWidth, this.spriteHeight)
+        this.animate();
     }
     
     increaseFrame(){
@@ -103,28 +105,72 @@ class Player{
 
         this.dy += this.friction;
         this.y += this.dy;
-
-        this.draw();
     }
 
 
     bindInputs(){
-        document.addEventListener("keydown", function(event){
-            if(event.key === "ArrowRight" || event.key === "d"){
-                right = true;
-            } else if(event.key === "ArrowLeft" || event.key === "a"){
-                left = true;
-            }
-        });
+        let that = this;
+        this.reverseInputs();
+        this.removeInputs();
 
-        document.addEventListener("keyup", function(event){
-            if(event.key === "ArrowRight" || event.key === "d"){
-                right = false;
-            } else if(event.key === "ArrowLeft" || event.key === "a"){
-                left = false;
-            }
-        })
+        document.addEventListener("keydown", event => that.keyDown(event))
+        document.addEventListener("keyup", event => that.keyUp(event))
+   
     }
+    
+    keyDown(event){
+        if(event.key === "ArrowRight" || event.key === "d"){
+            right = true;
+        } else if(event.key === "ArrowLeft" || event.key === "a"){
+            left = true;
+        }
+    }
+
+    keyUp(event){
+        if(event.key === "ArrowRight" || event.key === "d"){
+            right = false;
+        } else if(event.key === "ArrowLeft" || event.key === "a"){
+            left = false;
+        }
+    }
+
+    reverseInputs(){
+        let that = this;
+        this.removeInputs();
+
+        document.addEventListener("keydown", event => that.revKeyDown(event))
+        document.addEventListener("keyup", event => that.revKeyUp(event))
+            
+    }
+
+    removeInputs(){
+        let that = this;
+        document.removeEventListener("keydown", that.keyDown);
+        document.removeEventListener("keyup", that.keyUp);
+        document.removeEventListener("keydown", that.revKeyDown);
+        document.removeEventListener("keyup", that.revKeyUp);
+    }
+
+    revKeyDown(event){
+        if(event.key === "ArrowRight" || event.key === "d"){
+            left = true;
+        }
+        if(event.key === "ArrowLeft" || event.key === "a"){
+            right = true;
+        }
+    }
+    
+    revKeyUp(event){
+        if(event.key === "ArrowRight" || event.key === "d"){
+            left = false;
+        } 
+        if(event.key === "ArrowLeft" || event.key === "a"){
+            right = false;
+        }
+    }
+
+
+
 }
 
 module.exports = Player;

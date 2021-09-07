@@ -8,14 +8,10 @@ const Wind = require('./scripts/wind.js');
 let pug = new Image();
 pug.src = "./src/scripts/small.png"
 
-let players = []
-pug.onload = ()=>{
-    console.log(players.length)
-    if (players.length != 1){
-        player = new Player(300, canvas.height - 500, pug);
-        players.push(player)
-    }
-}
+let player;
+// let players = []
+
+// player = players[0]
 
 let currentFrame = 0;
 let frames = [];
@@ -44,7 +40,6 @@ let background = new Image();
 background.src = backgrounds[0]
 let backgroundIdx = 0;
 
-let player;
 let falls = 0;
 let wind;
 let windCircle;
@@ -56,27 +51,28 @@ document.addEventListener("DOMContentLoaded", () => {
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
-    let pug = new Image();
-    pug.src = "./src/scripts/small.png" 
+    // let pug = new Image();
+    // pug.src = "./src/scripts/small.png" 
+    // player = new Player(300, canvas.height - 500, pug);
     firstFrame = new Frames(0);
     frames.push(firstFrame);
     wind = new Wind();
     windCircle = new WindCircle(canvas.width / 2, canvas.height / 2, 1, 100);
-
-    // pug.onload = ()=>{
-
-    //     player = new Player(300, canvas.height - 500, pug);
-    // }
-
+    console.log(player)
     window.setInterval(drawAll, 10);
 });
 
-
+let players = []
+pug.onload = ()=>{
+    if (players.length != 1){
+        player = new Player(300, canvas.height - 500, pug);
+        players.push(player)
+    }
+}
 
 
 function objectCollision(player, object){
     if( inRangeY(player, object)){
-        // player.dx = -player.dx
         if (inRangeX(player, object)){
             player.dy = -player.originalDy;
         }
@@ -91,7 +87,7 @@ function drawAll(){
     
     
     window.context.drawImage(background,0,0, canvas.width, canvas.height)
-
+    // console.log(player)
     if (player.y < 0){
         backgroundIdx += 1
         background.src = backgrounds[backgroundIdx % backgrounds.length]
@@ -125,11 +121,18 @@ function drawAll(){
     window.context.fillText("Fall Distance: ", 10, 50)
     window.context.fillText(falls, 200, 50)
 
-    if (currentFrame % 5 === 0){
-        wind.draw();
-        player.windEffect(wind.state);
+    // if (currentFrame % 5 === 0){
+    //     wind.draw();
+    //     player.windEffect(wind.state);
+    // }
+
+    if(currentFrame === 0){
+        player.bindInputs();
+    } else {
+        player.reverseInputs();
     }
-    player.animate();
+
+    player.draw();
 }
 
 function getLastFrame(currentFrame){
