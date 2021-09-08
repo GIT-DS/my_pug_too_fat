@@ -119,7 +119,9 @@ document.addEventListener("DOMContentLoaded", () => {
     wind = new Wind();
     let reverse = new Image();
     window.titanic = new Audio('src/titanic.mp3')
+    window.titanic.volume = 0.1;
     window.windSound = new Audio('src/wind.mp3')
+    window.windSound.volume = 0.1;
     window.epicMusic = new Audio('src/alexander-nakarada-superepic.mp3')
     window.epicMusic.volume = 0.05;
     window.endMusic = new Audio('src/shooting_stars.mp3')
@@ -261,6 +263,7 @@ function animate(){
         
         // wind
         if( currentFrame != 0 && currentFrame % 5 === 0){
+            window.epicMusic.pause();
             wind.draw();
             window.windSound.play();
             player.windEffect(wind.state);
