@@ -70,28 +70,28 @@ let quotesIdx = Math.floor(Math.random() * quotes.length);
 //background stuff
 const backgrounds = [
     'src/img/1.jpg',
-    // 'src/img/2.jpg',
-    // 'src/img/3.jpg',
-    // 'src/img/4.jpg',
-    // 'src/img/5.jpg',
-    // 'src/img/6.jpg',
-    // 'src/img/7.jpg',
-    // 'src/img/8.jpg',
-    // 'src/img/9.jpg',
-    // 'src/img/11.jpg',
-    // 'src/img/12.jpg',
-    // 'src/img/14.jpg',
-    // 'src/img/15.jpg',
-    // 'src/img/16.jpg',
-    // 'src/img/17.jpg',
-    // 'src/img/18.jpg',
-    // 'src/img/19.jpg',
-    // 'src/img/20.jpg',
+    'src/img/2.jpg',
+    'src/img/3.jpg',
+    'src/img/4.jpg',
+    'src/img/5.jpg',
+    'src/img/6.jpg',
+    'src/img/7.jpg',
+    'src/img/8.jpg',
+    'src/img/9.jpg',
+    'src/img/11.jpg',
+    'src/img/12.jpg',
+    'src/img/14.jpg',
+    'src/img/15.jpg',
+    'src/img/16.jpg',
+    'src/img/17.jpg',
+    'src/img/18.jpg',
+    'src/img/19.jpg',
+    'src/img/20.jpg',
     'src/img/last.jpg'
 ]
 
 const startBG = new Image()
-startBG.src = "/src/pugCookie.jpg"
+startBG.src = "src/pugCookie.jpg"
 
 
 let background = new Image();
