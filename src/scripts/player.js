@@ -40,10 +40,8 @@ class Player{
         this.height = this.spriteHeight;
         this.timer = 5;
 
+        this.bindInputs();
 
-
-        // this.bindInputs();
-        // this.draw();
     }
 
     draw(){
@@ -82,51 +80,54 @@ class Player{
         this.pugStep();
 
         if (left){
+
+            //sprite direction
             if (this.src.src != "src/scripts/small_rev.png"){
                 this.src.src = "src/scripts/small_rev.png";
             }
+
+            //overwriting sprite on reverse
             if (this.rev === -1){
                 this.src.src = "src/scripts/small.png"
             }
-            if (this.dx === 0 && this.x <= 0) this.dx = this.originalDx;
-            if (this.dx === 0 && this.x >= canvas.width) this.dx = -this.originalDx;
+
+            //gradual movement
             if (this.dx < this.maxDx){
                 this.dx += this.friction;
             }
+
+
             this.x -= this.dx * this.rev;
         } else if (right){
+
+            //sprite direction
             if (this.src.src != "src/scripts/small.png"){
                 this.src.src = "src/scripts/small.png"
             }
+
+            //overwriting sprite on reverse
             if (this.rev === -1){
                 this.src.src = "src/scripts/small_rev.png"
             }
-            if (this.dx === 0 && this.x <= 0) this.dx = this.originalDx;
-            if (this.dx === 0 && this.x >= canvas.width) this.dx = -this.originalDx;
 
+            //gradual movement
             if (this.dx < this.maxDx){
             this.dx += this.friction;
             }
+
+
             this.x += this.dx * this.rev;
 
-        } else if (!left || !right){
+        } else if (!left || !right){ //resetting velocity on keyUp
             this.dx = this.originalDx;
-        } else if (!right){
-            this.dx = this.originalDx;
-        }
+        } 
 
         this.dy += this.friction;
         this.y += this.dy;
     }
 
-    // removeInputs(){
-    //     let that = this;
-    //     document.removeEventListener("keyup", that.regKeysUp);
-    //     document.removeEventListener("keyup", that.revKeysUp);
-    //     document.removeEventListener("keydown", that.revKeysDown);
-    //     document.removeEventListener("keydown", that.regKeysDown);
-    // }
 
+    //Event Listeners
     bindInputs(){
         let that = this;
 
@@ -134,6 +135,7 @@ class Player{
         document.addEventListener("keydown", that.regKeysDown)
     }
     
+    //key handlers
     keyDown(event){
         if(event.key === "ArrowRight" || event.key === "d"){
             right = true;
@@ -150,34 +152,6 @@ class Player{
         }
     }
 
-    // reverseInputs(){
-    //     let that = this;
-    //     document.removeEventListener("keydown", that.regKeysDown);
-    //     document.removeEventListener("keyup", that.regKeysUp);
-
-    //     document.addEventListener("keydown", that.revKeysDown)
-    //     document.addEventListener("keyup",  that.revKeysUp)
-
-    // }
-
-
-    // revKeyDown(event){
-    //     if(event.key === "ArrowRight" || event.key === "d"){
-    //         left = true;
-    //     }
-    //     if(event.key === "ArrowLeft" || event.key === "a"){
-    //         right = true;
-    //     }
-    // }
-    
-    // revKeyUp(event){
-    //     if(event.key === "ArrowRight" || event.key === "d"){
-    //         left = false;
-    //     } 
-    //     if(event.key === "ArrowLeft" || event.key === "a"){
-    //         right = false;
-    //     }
-    // }
 
 
 

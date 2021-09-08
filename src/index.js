@@ -2,22 +2,21 @@ const Player = require('./scripts/player.js')
 const Frames = require('./scripts/frame.js')
 let titanic = new Audio('src/titanic.mp3')
 
-const WindCircle = require('./scripts/windCircles.js');
+
+// const WindCircle = require('./scripts/windCircles.js');
 const Wind = require('./scripts/wind.js');
 
 let pug = new Image();
 pug.src = "./src/scripts/small.png"
 
-let reverse = new Image();
+const reverse = new Image();
 reverse.src = "src/reverse.png"
+
 let revWidth = reverse.width / 6
 let revHeight = reverse.height / 6
 
 
 let player;
-// let players = []
-
-// player = players[0]
 
 let currentFrame = 0;
 let frames = [];
@@ -48,7 +47,7 @@ let backgroundIdx = 0;
 
 let falls = 0;
 let wind;
-let windCircle;
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById('game');
@@ -60,7 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
     firstFrame = new Frames(0);
     frames.push(firstFrame);
     wind = new Wind();
-    windCircle = new WindCircle(canvas.width / 2, canvas.height / 2, 1, 100);
+    let reverse = new Image();
+    window.windSound = new Audio('src/wind.mp3')
+    reverse.src = "src/reverse.png"
     window.setInterval(drawAll, 10);
 
 });
@@ -70,7 +71,6 @@ pug.onload = ()=>{
     if (players.length != 1){
         player = new Player(300, canvas.height - 500, pug);
         players.push(player)
-        players[0].bindInputs();
     }
 }
 
@@ -91,7 +91,19 @@ function drawAll(){
     
     
     window.context.drawImage(background,0,0, canvas.width, canvas.height)
-    // console.log(player)
+
+
+    // conditional for reversing directions;
+    if(currentFrame % 4 === 0){
+        window.context.globalAlpha = 0.5;
+        window.context.drawImage(reverse, 50, 80, revWidth, revHeight)
+        window.context.globalAlpha = 1;
+
+        player.rev = -1;
+    } else {
+        player.rev = 1
+    }
+
     if (player.y < 0){
         backgroundIdx += 1
         background.src = backgrounds[backgroundIdx % backgrounds.length]
@@ -114,6 +126,15 @@ function drawAll(){
         objectCollision(player, plat)
     })
 
+    if(currentFrame === 1){
+        wind.draw();
+        window.windSound.play();
+        player.windEffect(wind.state);
+    } else {
+        window.windSound.pause();
+    }
+
+
     collideSide(player)
 
     if(player.dy > 25) {
@@ -124,23 +145,6 @@ function drawAll(){
 
     window.context.fillText("Fall Distance: ", 10, 50)
     window.context.fillText(falls, 200, 50)
-
-    // if (currentFrame % 5 === 0){
-    //     wind.draw();
-    //     player.windEffect(wind.state);
-    // }
-
-
-    // reverse key directions
-    if(currentFrame % 4 === 0){
-        window.context.globalAlpha = 0.5;
-        window.context.drawImage(reverse, 50, 80, revWidth, revHeight)
-        window.context.globalAlpha = 1;
-
-        player.rev = -1;
-    } else {
-        player.rev = 1
-    }
 
     player.draw();
 }
@@ -183,12 +187,10 @@ function inRangeY(player, object){
 function collideSide(player){
     if (player.x + player.width + player.dy > canvas.width){
         player.x = canvas.width - player.width;
-        // player.dx = player.originalDx;
         player.dx = -player.dx
     }
     if (player.x  + player.dx < 0 ){
         player.x = 0;
-        // player.dx = player.originalDx
         player.dx = -player.dx 
     }
 
