@@ -7,13 +7,11 @@ class Frame{
         this.number = number;
         this.lastPlat = lastPlat;
         this.addPlatform();
-        this.draw();
-
     }
     addPlatform(){
         if (this.number === 0){
-            this.plats.push( new Object(0, canvas.height - 100, canvas.width, 100, "white"))
-            this.plats.push( new Object( canvas.width / 2, canvas.height - 150, 10, 10, "white") )
+            this.plats.push( new Object(0, canvas.height - 100, canvas.width, 100, "lightgrey"))
+            this.plats.push( new Object( canvas.width / 2, canvas.height - 150, 10, 10, "lightgrey") )
             this.lastPlat = this.plats[this.plats.length - 1];
         }
         for(let i = 0; i < window.canvas.height/ 200; i++){
@@ -36,7 +34,7 @@ class Frame{
 
             let randWidth = Math.random()*10 + 10;
 
-            let newObj = new Object(x, y, randWidth, 10, "white")
+            let newObj = new Object(x, y, randWidth, 10, "lightgrey")
             this.plats.push(newObj);
             this.lastPlat = newObj;
         }

@@ -1,25 +1,75 @@
+//imports
 const Player = require('./scripts/player.js')
 const Frames = require('./scripts/frame.js')
-let titanic = new Audio('src/titanic.mp3')
-
-
-// const WindCircle = require('./scripts/windCircles.js');
+const Object = require('./scripts/object.js');
 const Wind = require('./scripts/wind.js');
 
-let pug = new Image();
-pug.src = "./src/scripts/small.png"
 
+//sprite
+let pug = new Image();
+pug.src = "./src/scripts/small.png";
+let player;
+
+let players = [];
+
+pug.onload = ()=>{
+    if (players.length != 1){
+        player = new Player(300, canvas.height - 500, pug);
+        players.push(player)
+    }
+}
+
+//images
+let luna = new Image();
+luna.src = "./src/loony.png"
+
+let winnerBackground = new Image();
+winnerBackground.src = "./src/img/winnerBackground.jpg"
+
+//audio
+let vol = new Image();
+vol.src = "src/volOnSmall.png"
+
+
+// reverse controls indicator
 const reverse = new Image();
 reverse.src = "src/reverse.png"
-
 let revWidth = reverse.width / 6
 let revHeight = reverse.height / 6
 
+//variables
+let wind;
+let muted = false;
+let falls = 0;
 
-let player;
+let start = true;
+let game = false;
+let end = false;
 
-let currentFrame = 0;
-let frames = [];
+let textDy = -1;
+
+
+const quotes =[
+    "The greatest glory in living lies not in never falling, but in rising every time we fall. -Nelson Mandela",
+    "We are what we repeatedly do. Excellence, then, is not an act, but a habit – Aristotle",
+    "Life must be understood backward. But it must be lived forward – Søren Kierkegaard",
+    "I think therefore I am – René Descartes",
+    "The greater the difficulty, the more glory in surmounting it – Epicurus",
+    "Perseverance is not a long race; it is many short races one after the other - Walter Elliot",
+    "By perseverance the snail reached the ark - Charles Spurgeon",
+    "With pride, there are many curses. With humility, there come many blessings - Erza Taft Benson",
+    "It's not what you look at that matters, it's what you see - Henry David Thoreau",
+    "LOL : ^ ) - Darrick Shin",
+    "Omae wa mo shinderu - Kenshiro",
+    "Whatever you lose, you'll find it again. But what you throw away you'll never get back - Kenshin Himura",
+    "The world isn’t perfect. But it’s there for us, doing the best it can….that’s what makes it so damn beautiful - Roy Mustang",
+    "People, who can’t throw something important away, can never hope to change anything - Armin Arlert",
+    "Forgetting is like a wound. The wound may heal, but it has already left a scar - Monkey D. Luffy",
+]
+
+let quotesIdx = Math.floor(Math.random() * quotes.length);
+
+//background stuff
 const backgrounds = [
     'src/img/1.jpg',
     'src/img/2.jpg',
@@ -41,12 +91,19 @@ const backgrounds = [
     'src/img/20.jpg',
     'src/img/last.jpg'
 ]
+
+const startBG = new Image()
+startBG.src = "/src/pugCookie.jpg"
+
+
 let background = new Image();
 background.src = backgrounds[0]
 let backgroundIdx = 0;
 
-let falls = 0;
-let wind;
+//frame tracker
+let currentFrame = 0;
+let frames = [];
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -56,23 +113,81 @@ document.addEventListener("DOMContentLoaded", () => {
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
+    
     firstFrame = new Frames(0);
     frames.push(firstFrame);
     wind = new Wind();
     let reverse = new Image();
+    window.titanic = new Audio('src/titanic.mp3')
     window.windSound = new Audio('src/wind.mp3')
+    window.epicMusic = new Audio('src/alexander-nakarada-superepic.mp3')
+    window.epicMusic.volume = 0.05;
+    window.endMusic = new Audio('src/shooting_stars.mp3')
+    window.endMusic.volume = 0.05;
+    window.volumeButton = new Object(canvas.width - vol.width - 45, vol.height - 10, vol.width + 20, vol.height + 20, "white")
     reverse.src = "src/reverse.png"
-    window.setInterval(drawAll, 10);
+    
+
+    let mouseEvent = (event) => musicEventHandler(event)
+    let startEvent = (event) => startEventHandler(event)
+    window.canvas.addEventListener("click", startEvent, false)
+    window.canvas.addEventListener("click", mouseEvent, false)
+
+    window.setInterval(animate, 10);
 
 });
 
-let players = []
-pug.onload = ()=>{
-    if (players.length != 1){
-        player = new Player(300, canvas.height - 500, pug);
-        players.push(player)
+
+function startEventHandler(event){
+
+    if (mouseCollision(event, window.startButton)){
+        start = false;
+        game = true;
+        end = false;
     }
 }
+
+function musicEventHandler(event){
+
+
+    if (mouseCollision(event, window.volumeButton)){
+        if (muted === true){
+            vol.src = "src/volOnSmall.png"
+            window.epicMusic.muted = false;
+            window.windSound.muted = false;
+            window.titanic.muted = false;
+            window.endMusic.muted = false;
+            muted = false;
+        } else {
+            vol.src = "src/volOffSmall.png"
+            window.epicMusic.muted = true;
+            window.windSound.muted = true;
+            window.titanic.muted = true;
+            window.endMusic.muted = true;
+            muted = true;
+        }
+    }
+}
+
+function mouseCollision(event, object){
+    let domRect = window.canvas.getBoundingClientRect();
+    let mouseX = event.clientX - domRect.x;
+    let mouseY = event.clientY - domRect.y;
+
+
+
+
+    if (mouseY < object.y + object.height && mouseX > object.x &&
+        mouseY > object.y && mouseX < object.x + object.width ){
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
 
 
 function objectCollision(player, object){
@@ -84,75 +199,173 @@ function objectCollision(player, object){
     
 }
 
-function drawAll(){
+function animate(){
+    if (start === true){
 
-    window.context.clearRect(0,0, canvas.width, canvas.height)
-    window.context.font = "30px Arial";
-    
-    
-    window.context.drawImage(background,0,0, canvas.width, canvas.height)
+        window.context.drawImage(startBG, 0, 0, canvas.width, canvas.height)
+        window.startButton = new Object(canvas.width/2 - 177, canvas.height - 200, 300, 100, "White")
+        window.startButton.draw();
+        window.context.font = "30px Arial";
+        window.context.fillStyle = "black"
+        window.context.textAlign = "center";
+        window.context.fillText("Start", canvas.width / 2 - 30, canvas.height - 150 + 13)
+    } else if (game === true){
 
-
-    // conditional for reversing directions;
-    if(currentFrame % 4 === 0){
-        window.context.globalAlpha = 0.5;
-        window.context.drawImage(reverse, 50, 80, revWidth, revHeight)
-        window.context.globalAlpha = 1;
-
-        player.rev = -1;
-    } else {
-        player.rev = 1
-    }
-
-    if (player.y < 0){
-        backgroundIdx += 1
-        background.src = backgrounds[backgroundIdx % backgrounds.length]
-        let lastFramePlats = getLastFrame(currentFrame).plats;
-        let lastPlat = lastFramePlats[lastFramePlats.length - 1];
-        currentFrame += 1;
-        if (!frames[currentFrame]){
-            newFrame = new Frames(currentFrame, lastPlat);
-            frames.push(newFrame)
+        // reset on replay
+        if (player.reseted === true) {
+            player.reseted = false
+            player.reset();
+            currentFrame = 0;
+            frames = []
+            firstFrame = new Frames(0);
+            frames.push(firstFrame);
+            backgroundIdx = 0
         }
-        player.y += canvas.height;
-    } else if (player.y > canvas.height){
-        backgroundIdx -= 1;
-        background.src = backgrounds[backgroundIdx % backgrounds.length]
-        currentFrame -= 1;
-        player.y = 0;
+        window.endMusic.pause();
+        window.endMusic.currentTime = 0;
+        window.epicMusic.play();
+        window.context.clearRect(0,0, canvas.width, canvas.height)
+
+        window.context.font = "30px Arial";
+        window.context.drawImage(background,0,0, canvas.width, canvas.height)
+
+        if (player.y < 0){
+            backgroundIdx += 1
+            if (backgroundIdx === backgrounds.length - 1){
+                game = false;
+                end = true;
+                window.canvas.cancelAnimationFrame(animate)
+            }
+
+            background.src = backgrounds[backgroundIdx % backgrounds.length]
+            let lastFramePlats = getLastFrame(currentFrame).plats;
+            let lastPlat = lastFramePlats[lastFramePlats.length - 1];
+            currentFrame += 1;
+            if (!frames[currentFrame]){
+                newFrame = new Frames(currentFrame, lastPlat);
+                frames.push(newFrame)
+            }
+            player.y += canvas.height;
+        } else if (player.y > canvas.height){
+            backgroundIdx -= 1;
+            background.src = backgrounds[backgroundIdx % backgrounds.length]
+            currentFrame -= 1;
+            quotesIdx++;
+            player.y = 0;
+        }
+        frames[currentFrame].plats.forEach(plat => {
+            plat.draw()
+            objectCollision(player, plat)
+            
+        })
+        
+        // wind
+        if( currentFrame != 0 && currentFrame % 5 === 0){
+            wind.draw();
+            window.windSound.play();
+            player.windEffect(wind.state);
+        } else {
+            window.windSound.pause();
+        }
+
+        // conditional for reversing directions;
+        if(currentFrame != 0 && currentFrame % 4 === 0){
+            window.context.globalAlpha = 0.5;
+            window.context.drawImage(reverse, 50, 80, revWidth, revHeight)
+            window.context.globalAlpha = 1;
+
+            player.rev = -1;
+        } else {
+            player.rev = 1
+        }
+
+
+        //quotes
+        if(currentFrame === 0){
+            let quote = quotes[quotesIdx % quotes.length]
+            window.context.StrokeStyle = "black"
+            // window.context.lineWidth = 8;
+            window.context.textAlign = "center"
+            window.context.strokeText(quote, canvas.width/2, canvas.height - 44)
+            window.context.fillStyle = "white"
+            window.context.textAlign = "center"
+            window.context.fillText(quote, canvas.width/2,  canvas.height - 44)
+        }
+
+
+
+        collideSide(player)
+
+        //fall counter & troll music.
+        if(player.dy > 25) {
+            window.epicMusic.volume = 0;
+            window.titanic.currentTime = 2;
+            window.titanic.play();
+            falls++;
+        }
+        window.context.textAlign = "left"
+        window.context.fillText("Fall Distance: ", 10, 50)
+        window.context.fillText(falls, 200, 50)
+        window.volumeButton.draw();
+        window.context.drawImage(vol, canvas.width - vol.width - 35, vol.height, vol.width, vol.height)
+
+        player.draw();
+    } else if (end === true){
+
+        player.reseted = true;
+
+        window.titanic.pause();
+        window.epicMusic.pause();
+        window.endMusic.play();
+        window.context.clearRect(0, 0, canvas.width, canvas.height)
+        
+        window.context.drawImage(winnerBackground, 0, 0, canvas.width, canvas.height)
+
+        sideWrap(player)
+        collideTop(player)
+        player.friction = 0;
+
+
+        window.context.font = "100px Arial";
+        window.context.fillStyle = "black"
+        window.context.textAlign = "center";
+        window.context.fillText("You did it!!", canvas.width / 4 - 1, canvas.height /2 + 1)
+
+
+        window.context.fillStyle = "white"
+        window.context.textAlign = "center";
+        window.context.fillText("You did it!!", canvas.width / 4, canvas.height /2)
+
+        window.context.font = "50px Arial"
+        window.context.fillStyle = "white"
+        window.context.textAlight = "center"
+        window.context.fillText("Special Thanks To:", 3 * canvas.width / 4, canvas.height + textDy)
+        window.context.fillText("Vern Chao - reverse controlls idea", 3 * canvas.width / 4, canvas.height + 120 + textDy)
+        window.context.fillText("Jimmy Kuang - titanic music idea", 3 * canvas.width / 4, canvas.height + 180 + textDy)
+        window.context.fillText("Vincent Hsu - end screen idea", 3 * canvas.width / 4, canvas.height + 240 + textDy)
+
+
+        window.context.fillText("Luna - my not so chonky dog", 3 * canvas.width / 4, canvas.height + 360 + textDy)
+        window.context.drawImage(luna, 3 * canvas.width / 4 - luna.width / 2, canvas.height + 420 + textDy, luna.width, luna.height)
+
+        window.context.fillText("Created By: Darrick Shin", 3 * canvas.width / 4, canvas.height + 920 + textDy)
+
+
+        window.startButton.draw();
+        window.context.font = "30px Arial";
+        window.context.fillStyle = "black"
+        window.context.textAlign = "center";
+        window.context.fillText("Start", canvas.width / 2 - 30, canvas.height - 150 + 13)
+
+        textDy--;
+ 
+        player.draw();
     }
-    frames[currentFrame].plats.forEach(plat => {
-        plat.draw()
-        objectCollision(player, plat)
-    })
-
-    if(currentFrame === 1){
-        wind.draw();
-        window.windSound.play();
-        player.windEffect(wind.state);
-    } else {
-        window.windSound.pause();
-    }
-
-
-    collideSide(player)
-
-    if(player.dy > 25) {
-        titanic.currentTime = 2;
-        titanic.play();
-        falls++;
-    }
-
-    window.context.fillText("Fall Distance: ", 10, 50)
-    window.context.fillText(falls, 200, 50)
-
-    player.draw();
 }
 
 function getLastFrame(currentFrame){
     return frames[currentFrame];
 }
-
 
 function inRangeX(player, object){
     let playerStart = player.x;
@@ -185,7 +398,7 @@ function inRangeY(player, object){
 }
 
 function collideSide(player){
-    if (player.x + player.width + player.dy > canvas.width){
+    if (player.x + player.width + player.dx > canvas.width){
         player.x = canvas.width - player.width;
         player.dx = -player.dx
     }
@@ -194,4 +407,18 @@ function collideSide(player){
         player.dx = -player.dx 
     }
 
+}
+
+function collideTop(player){
+    if (player.y + player.dy < 0 || player.y + player.dy > canvas.height){
+        player.dy = -player.dy;
+    }
+}
+
+function sideWrap(player){
+    if (player.x + player.width > canvas.width + 50){
+        player.x = -player.width
+    } else if (player.x < -player.width){
+        player.x = canvas.width - player.width;
+    }
 }

@@ -12,17 +12,16 @@ class Player{
         this.originalDx = 3
         this.maxDx = 10;
         this.currentY = y;
+        this.friction = 0.1;
         this.originalDy = 6;
         this.maxHeight = this.y - 200;
-        this.friction = 0.1;
         this.maxVel = 5;
         this.wind = 5;
+        this.reseted = false;
 
 
         this.regKeysDown = (event) => {this.keyDown(event)}
         this.regKeysUp = (event) => {this.keyUp(event)}
-        this.revKeysDown = (event) => {this.revKeyDown(event)}
-        this.revKeysUp = (event) => {this.revKeyUp(event)}
 
 
         // image stuff
@@ -44,12 +43,28 @@ class Player{
 
     }
 
+    reset(){
+        console.log('this happened')
+        this.x = 300;
+        this.y = canvas.height - 500;
+        this.rev = 1;
+        this.dx = 3 * this.rev;
+        this.dy = -6;
+        this.originalDx = 3
+        this.maxDx = 10;
+        this.originalDy = 6;
+        this.friction = 0.1;
+        this.maxVel = 5;
+        this.wind = 5;
+    }
+
     draw(){
         context.fillStyle = 'rgba(225,225,225,0)'; // clear box
         context.fillRect(this.x, this.y, this.width, this.height);
         
         window.context.drawImage(this.src, this.srcX, this.srcY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.spriteWidth, this.spriteHeight)
         this.animate();
+        // window.canvas.requestAnimationFrame(draw)
     }
     
     increaseFrame(){
@@ -121,6 +136,8 @@ class Player{
         } else if (!left || !right){ //resetting velocity on keyUp
             this.dx = this.originalDx;
         } 
+
+
 
         this.dy += this.friction;
         this.y += this.dy;

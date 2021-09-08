@@ -7,7 +7,7 @@ class Wind{
         this.timer = 500;
         this.state = 'right';
         this.makeCircles();
-        this.draw();
+
     }
 
     draw(){
