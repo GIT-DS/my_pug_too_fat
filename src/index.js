@@ -200,8 +200,10 @@ function objectCollision(player, object){
 
 function animate(){
     if (start === true){
+        startBG.onload = () => {
+            window.context.drawImage(startBG, 0, 0, canvas.width, canvas.height)
+        }
 
-        window.context.drawImage(startBG, 0, 0, canvas.width, canvas.height)
         window.startButton = new Object(canvas.width/2 - 177, canvas.height - 200, 300, 100, "White")
         window.startButton.draw();
         window.context.font = "30px Arial";
@@ -235,7 +237,7 @@ function animate(){
             if (backgroundIdx === backgrounds.length - 1){
                 game = false;
                 end = true;
-                window.canvas.cancelAnimationFrame(animate)
+                return;
             }
 
             background.src = backgrounds[backgroundIdx % backgrounds.length]
