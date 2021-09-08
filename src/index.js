@@ -91,7 +91,7 @@ const backgrounds = [
 ]
 
 const startBG = new Image()
-startBG.src = "src/pugCookie.jpg"
+startBG.src = "src/pugCookie.png"
 
 
 let background = new Image();
