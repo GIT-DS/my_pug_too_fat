@@ -5,6 +5,11 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-family: 'Sail', cursive;
+}
+
+h1{
+    font-size: 100px;
 }
 canvas {
     display: flex;

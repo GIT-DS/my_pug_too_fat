@@ -6,7 +6,8 @@ class Player{
     constructor(x, y, src){
         this.x = x;
         this.y = y;
-        this.dx = 3;
+        this.rev = 1;
+        this.dx = 3 * this.rev;
         this.dy = 6;
         this.originalDx = 3
         this.maxDx = 10;
@@ -16,6 +17,8 @@ class Player{
         this.friction = 0.1;
         this.maxVel = 5;
         this.wind = 5;
+
+
         this.regKeysDown = (event) => {this.keyDown(event)}
         this.regKeysUp = (event) => {this.keyUp(event)}
         this.revKeysDown = (event) => {this.revKeyDown(event)}
@@ -76,22 +79,27 @@ class Player{
 
 
     animate(){
-        
         this.pugStep();
 
         if (left){
             if (this.src.src != "src/scripts/small_rev.png"){
                 this.src.src = "src/scripts/small_rev.png";
             }
+            if (this.rev === -1){
+                this.src.src = "src/scripts/small.png"
+            }
             if (this.dx === 0 && this.x <= 0) this.dx = this.originalDx;
             if (this.dx === 0 && this.x >= canvas.width) this.dx = -this.originalDx;
             if (this.dx < this.maxDx){
                 this.dx += this.friction;
             }
-            this.x -= this.dx;
+            this.x -= this.dx * this.rev;
         } else if (right){
             if (this.src.src != "src/scripts/small.png"){
                 this.src.src = "src/scripts/small.png"
+            }
+            if (this.rev === -1){
+                this.src.src = "src/scripts/small_rev.png"
             }
             if (this.dx === 0 && this.x <= 0) this.dx = this.originalDx;
             if (this.dx === 0 && this.x >= canvas.width) this.dx = -this.originalDx;
@@ -99,7 +107,7 @@ class Player{
             if (this.dx < this.maxDx){
             this.dx += this.friction;
             }
-            this.x += this.dx;
+            this.x += this.dx * this.rev;
 
         } else if (!left || !right){
             this.dx = this.originalDx;
@@ -111,14 +119,19 @@ class Player{
         this.y += this.dy;
     }
 
+    // removeInputs(){
+    //     let that = this;
+    //     document.removeEventListener("keyup", that.regKeysUp);
+    //     document.removeEventListener("keyup", that.revKeysUp);
+    //     document.removeEventListener("keydown", that.revKeysDown);
+    //     document.removeEventListener("keydown", that.regKeysDown);
+    // }
 
     bindInputs(){
         let that = this;
-        document.removeEventListener("keydown", that.revKeysDown);
-        document.removeEventListener("keyup", that.revKeysUp);
 
-        document.addEventListener("keydown", that.regKeysDown)
         document.addEventListener("keyup", that.regKeysUp)
+        document.addEventListener("keydown", that.regKeysDown)
     }
     
     keyDown(event){
@@ -137,34 +150,34 @@ class Player{
         }
     }
 
-    reverseInputs(){
-        let that = this;
-        document.removeEventListener("keydown", that.regKeysDown);
-        document.removeEventListener("keyup", that.regKeysUp);
+    // reverseInputs(){
+    //     let that = this;
+    //     document.removeEventListener("keydown", that.regKeysDown);
+    //     document.removeEventListener("keyup", that.regKeysUp);
 
-        document.addEventListener("keydown", that.revKeysDown)
-        document.addEventListener("keyup",  that.revKeysUp)
+    //     document.addEventListener("keydown", that.revKeysDown)
+    //     document.addEventListener("keyup",  that.revKeysUp)
 
-    }
+    // }
 
 
-    revKeyDown(event){
-        if(event.key === "ArrowRight" || event.key === "d"){
-            left = true;
-        }
-        if(event.key === "ArrowLeft" || event.key === "a"){
-            right = true;
-        }
-    }
+    // revKeyDown(event){
+    //     if(event.key === "ArrowRight" || event.key === "d"){
+    //         left = true;
+    //     }
+    //     if(event.key === "ArrowLeft" || event.key === "a"){
+    //         right = true;
+    //     }
+    // }
     
-    revKeyUp(event){
-        if(event.key === "ArrowRight" || event.key === "d"){
-            left = false;
-        } 
-        if(event.key === "ArrowLeft" || event.key === "a"){
-            right = false;
-        }
-    }
+    // revKeyUp(event){
+    //     if(event.key === "ArrowRight" || event.key === "d"){
+    //         left = false;
+    //     } 
+    //     if(event.key === "ArrowLeft" || event.key === "a"){
+    //         right = false;
+    //     }
+    // }
 
 
 

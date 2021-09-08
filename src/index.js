@@ -8,6 +8,12 @@ const Wind = require('./scripts/wind.js');
 let pug = new Image();
 pug.src = "./src/scripts/small.png"
 
+let reverse = new Image();
+reverse.src = "src/reverse.png"
+let revWidth = reverse.width / 6
+let revHeight = reverse.height / 6
+
+
 let player;
 // let players = []
 
@@ -51,15 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
-    // let pug = new Image();
-    // pug.src = "./src/scripts/small.png" 
-    // player = new Player(300, canvas.height - 500, pug);
     firstFrame = new Frames(0);
     frames.push(firstFrame);
     wind = new Wind();
     windCircle = new WindCircle(canvas.width / 2, canvas.height / 2, 1, 100);
-    console.log(player)
     window.setInterval(drawAll, 10);
+
 });
 
 let players = []
@@ -67,6 +70,7 @@ pug.onload = ()=>{
     if (players.length != 1){
         player = new Player(300, canvas.height - 500, pug);
         players.push(player)
+        players[0].bindInputs();
     }
 }
 
@@ -126,10 +130,16 @@ function drawAll(){
     //     player.windEffect(wind.state);
     // }
 
-    if(currentFrame % 3 === 0){
-        player.bindInputs();
+
+    // reverse key directions
+    if(currentFrame % 4 === 0){
+        window.context.globalAlpha = 0.5;
+        window.context.drawImage(reverse, 50, 80, revWidth, revHeight)
+        window.context.globalAlpha = 1;
+
+        player.rev = -1;
     } else {
-        player.reverseInputs();
+        player.rev = 1
     }
 
     player.draw();
@@ -145,6 +155,7 @@ function inRangeX(player, object){
     let playerEnd = player.x + player.width;
     let objectStart = object.x;
     let objectEnd = object.x + object.width;
+
     if ((playerStart < objectStart && playerStart < objectEnd &&
         playerEnd < objectStart && playerEnd < objectEnd) || 
         (playerStart > objectStart && playerStart > objectEnd &&
