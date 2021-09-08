@@ -3,6 +3,7 @@ const Player = require('./scripts/player.js')
 const Frames = require('./scripts/frame.js')
 const Object = require('./scripts/object.js');
 const Wind = require('./scripts/wind.js');
+const Credits = require('./scripts/credits.js')
 
 
 //sprite
@@ -19,9 +20,6 @@ pug.onload = ()=>{
     }
 }
 
-//images
-let luna = new Image();
-luna.src = "./src/loony.png"
 
 let winnerBackground = new Image();
 winnerBackground.src = "./src/img/winnerBackground.jpg"
@@ -72,23 +70,23 @@ let quotesIdx = Math.floor(Math.random() * quotes.length);
 //background stuff
 const backgrounds = [
     'src/img/1.jpg',
-    'src/img/2.jpg',
-    'src/img/3.jpg',
-    'src/img/4.jpg',
-    'src/img/5.jpg',
-    'src/img/6.jpg',
-    'src/img/7.jpg',
-    'src/img/8.jpg',
-    'src/img/9.jpg',
-    'src/img/11.jpg',
-    'src/img/12.jpg',
-    'src/img/14.jpg',
-    'src/img/15.jpg',
-    'src/img/16.jpg',
-    'src/img/17.jpg',
-    'src/img/18.jpg',
-    'src/img/19.jpg',
-    'src/img/20.jpg',
+    // 'src/img/2.jpg',
+    // 'src/img/3.jpg',
+    // 'src/img/4.jpg',
+    // 'src/img/5.jpg',
+    // 'src/img/6.jpg',
+    // 'src/img/7.jpg',
+    // 'src/img/8.jpg',
+    // 'src/img/9.jpg',
+    // 'src/img/11.jpg',
+    // 'src/img/12.jpg',
+    // 'src/img/14.jpg',
+    // 'src/img/15.jpg',
+    // 'src/img/16.jpg',
+    // 'src/img/17.jpg',
+    // 'src/img/18.jpg',
+    // 'src/img/19.jpg',
+    // 'src/img/20.jpg',
     'src/img/last.jpg'
 ]
 
@@ -117,7 +115,11 @@ document.addEventListener("DOMContentLoaded", () => {
     firstFrame = new Frames(0);
     frames.push(firstFrame);
     wind = new Wind();
+
+    credits = new Credits();
     let reverse = new Image();
+    reverse.src = "src/reverse.png"
+
     window.titanic = new Audio('src/titanic.mp3')
     window.titanic.volume = 0.1;
     window.windSound = new Audio('src/wind.mp3')
@@ -127,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.endMusic = new Audio('src/shooting_stars.mp3')
     window.endMusic.volume = 0.05;
     window.volumeButton = new Object(canvas.width - vol.width - 45, vol.height - 10, vol.width + 20, vol.height + 20, "white")
-    reverse.src = "src/reverse.png"
+    
     
 
     let mouseEvent = (event) => musicEventHandler(event)
@@ -187,11 +189,6 @@ function mouseCollision(event, object){
 }
 
 
-
-
-
-
-
 function objectCollision(player, object){
     if( inRangeY(player, object)){
         if (inRangeX(player, object)){
@@ -221,7 +218,9 @@ function animate(){
             frames = []
             firstFrame = new Frames(0);
             frames.push(firstFrame);
-            backgroundIdx = 0
+            backgroundIdx = 0;
+            falls = 0;
+            window.epicMusic.currentTime = 0;
         }
         window.endMusic.pause();
         window.endMusic.currentTime = 0;
@@ -320,6 +319,7 @@ function animate(){
         window.titanic.pause();
         window.epicMusic.pause();
         window.endMusic.play();
+
         window.context.clearRect(0, 0, canvas.width, canvas.height)
         
         window.context.drawImage(winnerBackground, 0, 0, canvas.width, canvas.height)
@@ -328,40 +328,9 @@ function animate(){
         collideTop(player)
         player.friction = 0;
 
+        credits.draw();
 
-        window.context.font = "100px Arial";
-        window.context.fillStyle = "black"
-        window.context.textAlign = "center";
-        window.context.fillText("You did it!!", canvas.width / 4 - 1, canvas.height /2 + 1)
-
-
-        window.context.fillStyle = "white"
-        window.context.textAlign = "center";
-        window.context.fillText("You did it!!", canvas.width / 4, canvas.height /2)
-
-        window.context.font = "50px Arial"
-        window.context.fillStyle = "white"
-        window.context.textAlight = "center"
-        window.context.fillText("Special Thanks To:", 3 * canvas.width / 4, canvas.height + textDy)
-        window.context.fillText("Vern Chao - reverse controlls idea", 3 * canvas.width / 4, canvas.height + 120 + textDy)
-        window.context.fillText("Jimmy Kuang - titanic music idea", 3 * canvas.width / 4, canvas.height + 180 + textDy)
-        window.context.fillText("Vincent Hsu - end screen idea", 3 * canvas.width / 4, canvas.height + 240 + textDy)
-
-
-        window.context.fillText("Luna - my not so chonky dog", 3 * canvas.width / 4, canvas.height + 360 + textDy)
-        window.context.drawImage(luna, 3 * canvas.width / 4 - luna.width / 2, canvas.height + 420 + textDy, luna.width, luna.height)
-
-        window.context.fillText("Created By: Darrick Shin", 3 * canvas.width / 4, canvas.height + 920 + textDy)
-
-
-        window.startButton.draw();
-        window.context.font = "30px Arial";
-        window.context.fillStyle = "black"
-        window.context.textAlign = "center";
-        window.context.fillText("Start", canvas.width / 2 - 30, canvas.height - 150 + 13)
-
-        textDy--;
- 
+        
         player.draw();
     }
 }
