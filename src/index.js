@@ -70,23 +70,23 @@ let quotesIdx = Math.floor(Math.random() * quotes.length);
 //background stuff
 const backgrounds = [
     'src/img/1.jpg',
-    'src/img/2.jpg',
-    'src/img/3.jpg',
-    'src/img/4.jpg',
-    'src/img/5.jpg',
-    'src/img/6.jpg',
-    'src/img/7.jpg',
-    'src/img/8.jpg',
-    'src/img/9.jpg',
-    'src/img/11.jpg',
-    'src/img/12.jpg',
-    'src/img/14.jpg',
-    'src/img/15.jpg',
-    'src/img/16.jpg',
-    'src/img/17.jpg',
-    'src/img/18.jpg',
-    'src/img/19.jpg',
-    'src/img/20.jpg',
+    // 'src/img/2.jpg',
+    // 'src/img/3.jpg',
+    // 'src/img/4.jpg',
+    // 'src/img/5.jpg',
+    // 'src/img/6.jpg',
+    // 'src/img/7.jpg',
+    // 'src/img/8.jpg',
+    // 'src/img/9.jpg',
+    // 'src/img/11.jpg',
+    // 'src/img/12.jpg',
+    // 'src/img/14.jpg',
+    // 'src/img/15.jpg',
+    // 'src/img/16.jpg',
+    // 'src/img/17.jpg',
+    // 'src/img/18.jpg',
+    // 'src/img/19.jpg',
+    // 'src/img/20.jpg',
     'src/img/last.jpg'
 ]
 
@@ -201,9 +201,16 @@ function objectCollision(player, object){
 function animate(){
     if (start === true){
         window.context.drawImage(startBG, 0, 0, canvas.width, canvas.height)
-        // startBG.onload = () => {
-        // }
+        
+        window.context.fillStyle = 'rgba(225,225,225,0.1)'
+        window.context.fillRect(0,0,canvas.width, 170)
+        window.context.fillStyle = "black"
+        window.context.fillText("Hello! Welcome to my fun little game. My pug is too fat. Help it exercise by reaching the top.", canvas.width/ 2,50)
+        window.context.fillText("Watch out for some 'fun' little surprises along the way ;)", canvas.width/ 2, 90)
+        window.context.fillText("If you fall, you might fall all the way to the bottom, but that's part of the fun right?", canvas.width/ 2, 130)
+        
 
+        
         window.startButton = new Object(canvas.width/2 - 177, canvas.height - 200, 300, 100, "White")
         window.startButton.draw();
         window.context.font = "30px Arial";
@@ -250,6 +257,8 @@ function animate(){
             }
             player.y += canvas.height;
         } else if (player.y > canvas.height){
+            
+            
             backgroundIdx -= 1;
             background.src = backgrounds[backgroundIdx % backgrounds.length]
             currentFrame -= 1;
@@ -300,12 +309,13 @@ function animate(){
 
         collideSide(player)
 
-        //fall counter & troll music.
+        //fall counter & troll music && remapping first screen background.
         if(player.dy > 25) {
             window.epicMusic.volume = 0;
             window.titanic.currentTime = 2;
             window.titanic.play();
             falls++;
+            if (backgrounds[0] != "src/img/yuno.jpg") backgrounds[0] = "src/img/yuno.jpg"
         }
         window.context.textAlign = "left"
         window.context.fillText("Fall Distance: ", 10, 50)
