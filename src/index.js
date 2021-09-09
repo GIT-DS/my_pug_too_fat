@@ -319,8 +319,7 @@ function animate(){
         window.context.textAlign = "left"
         window.context.fillText("Fall Distance: ", 10, 50)
         window.context.fillText(falls, 200, 50)
-        window.volumeButton.draw();
-        window.context.drawImage(vol, canvas.width - vol.width - 35, vol.height, vol.width, vol.height)
+        
 
         player.draw();
     } else if (end === true){
@@ -344,6 +343,10 @@ function animate(){
         
         player.draw();
     }
+
+
+    window.volumeButton.draw();
+    window.context.drawImage(vol, canvas.width - vol.width - 35, vol.height, vol.width, vol.height)
 }
 
 function getLastFrame(currentFrame){
