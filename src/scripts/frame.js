@@ -32,7 +32,7 @@ class Frame{
                 y = canvas.height - 100;
             }
 
-            let randWidth = Math.random()*10 + 10;
+            let randWidth = Math.random()*10 + 20;
 
             let newObj = new Object(x, y, randWidth, 10, "lightgrey")
             this.plats.push(newObj);
