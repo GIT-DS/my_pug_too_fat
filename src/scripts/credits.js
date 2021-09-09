@@ -37,13 +37,14 @@ class Credits{
         window.context.fillText("Vern Chao - reverse controls idea", this.x, this.y + spacer * 10)
         window.context.fillText("Jimmy Kuang - titanic music idea", this.x, this.y + spacer * 11)
         window.context.fillText("Vincent Hsu - end screen idea", this.x, this.y + spacer * 12)
-        window.context.fillText("Melissa Flynn - help debugging", this.x, this.y + spacer * 13)
+        window.context.fillText("Melissa Flynn - image debugging", this.x, this.y + spacer * 13)
+        window.context.fillText("Zack Barbieri - reverse controls debugging", this.x, this.y + spacer * 14)
 
 
-        window.context.fillText("Luna - my not so chonky dog", this.x, this.y + spacer * 15)
-        window.context.drawImage(luna, this.x - luna.width / 2, this.y + spacer * 16, luna.width, luna.height)
+        window.context.fillText("Luna - my not so chonky dog", this.x, this.y + spacer * 16)
+        window.context.drawImage(luna, this.x - luna.width / 2, this.y + spacer * 17, luna.width, luna.height)
 
-        window.context.fillText("Created By: Darrick Shin", this.x, this.y + spacer * 23.5)
+        window.context.fillText("Created By: Darrick Shin", this.x, this.y + spacer * 24.5)
 
         window.startButton.x = canvas.width / 4 - 150;
         window.startButton.y = (canvas.height / 2) + 20
