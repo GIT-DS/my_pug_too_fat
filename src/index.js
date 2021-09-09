@@ -31,7 +31,7 @@ vol.src = "src/volOnSmall.png"
 
 // reverse controls indicator
 const reverse = new Image();
-reverse.src = "src/reverse.png"
+reverse.src = "./src/reverse.png"
 let revWidth = reverse.width / 6
 let revHeight = reverse.height / 6
 
@@ -44,7 +44,6 @@ let start = true;
 let game = false;
 let end = false;
 
-let textDy = -1;
 
 
 const quotes =[
