@@ -61,10 +61,14 @@ body {
   font-family: "Sail", cursive;
 }
 
+#game {
+  align-self: center;
+}
+
 .nav {
   display: flex;
   justify-content: space-between;
-  width: 1600px;
+  width: 90vw;
 }
 
 #controls {
@@ -75,20 +79,31 @@ body {
   justify-content: center;
 }
 
+#header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+i {
+  font-size: 50px;
+  color: white;
+}
+
 #startScreen {
   display: none;
 }
 
 .control-arrow {
   margin: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 10px;
-  border: 5px solid black;
 }
 
 h1 {
   font-size: 100px;
+}
+
+h2 {
+  font-size: 50px;
 }
 
 canvas {

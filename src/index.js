@@ -105,8 +105,10 @@ let frames = [];
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById('game');
-    canvas.width = 1600;
-    canvas.height = 1000;
+    const header = document.getElementById('header')
+
+    canvas.width = window.innerWidth * 0.64;
+    canvas.height = window.innerHeight * 0.64 - header.offsetHeight;
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
@@ -127,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.epicMusic.volume = 0.05;
     window.endMusic = new Audio('src/shooting_stars.mp3')
     window.endMusic.volume = 0.05;
-    window.volumeButton = new Object(canvas.width - vol.width - 45, vol.height - 10, vol.width + 20, vol.height + 20, "white")
+    window.volumeButton = new Object(canvas.width - 95, 30, 70, 55, "white")
     
     
 
@@ -135,6 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let startEvent = (event) => startEventHandler(event)
     window.canvas.addEventListener("click", startEvent, false)
     window.canvas.addEventListener("click", mouseEvent, false)
+
+    // window.titatic.addEventListener('ended', e => window.epicMusic.play());
 
     window.setInterval(animate, 10);
 
@@ -198,6 +202,11 @@ function objectCollision(player, object){
 }
 
 function animate(){
+
+
+
+
+
     if (start === true){
         window.context.drawImage(startBG, 0, 0, canvas.width, canvas.height)
         
@@ -271,7 +280,7 @@ function animate(){
         })
         
         // wind
-        if( currentFrame != 0 && currentFrame % 5 === 0){
+        if( currentFrame != 0 && currentFrame % 6 === 0 || currentFrame === 20){
             window.epicMusic.pause();
             wind.draw();
             window.windSound.play();
@@ -311,11 +320,20 @@ function animate(){
         //fall counter & troll music && remapping first screen background.
         if(player.dy > 25) {
             window.epicMusic.volume = 0;
+            // window.epicMusic.pause();
             window.titanic.currentTime = 2;
             window.titanic.play();
+            
             falls++;
             if (backgrounds[0] != "src/img/yuno.jpg") backgrounds[0] = "src/img/yuno.jpg"
         }
+
+        window.titanic.onended = () => {
+            window.epicMusic.currentTime = 0;
+            window.epicMusic.play();
+            if (muted === false) window.epicMusic.volume = 0.05;
+        }
+
         window.context.textAlign = "left"
         window.context.fillText("Fall Distance: ", 10, 50)
         window.context.fillText(falls, 200, 50)

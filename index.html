@@ -25,31 +25,43 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sail&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="./dist/main.css" />
     <link rel="shortcut icon" href="./src/favicon.ico?">
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+    />
 
     <script src="./dist/main.js"></script>
     <title>My Pug Too Fat</title>
 </head>
-<body>
-
-    <h1>My Pug Too Fat</h1>
-    <br>
-    <div class="nav">
-        <ul id="links">
-            <li class="link"><a href="https://github.com/GIT-DS"><i class="fa fa-github" style="font-size:50px"></i></a></li>
-            <li class="link"><a href="https://www.linkedin.com/in/darrick-shin/"><img src="src/linkedin.png" style="width:50px"></a></li>
-        </ul>
-        <div id="controls">
-            <p>Controls:</p> 
-            <div class="control-arrow"><</div>
-            <div class="control-arrow">></div>
+<body id='body'>
+    <div id='header'>
+        <h1>My Pug Too Fat</h1>
+        <br>
+        <div class="nav">
+            <ul id="links">
+                <li class="link"><a href="https://github.com/GIT-DS"><i class="fab fa-github" ></i></a></li>
+                <li class="link"><a href="https://www.linkedin.com/in/darrick-shin/"><i class="fab fa-linkedin" ></i></a></li>
+                <li class="link"><a href='https://angel.co/u/darrick-shin'><i class="fab fa-angellist" ></i></a></li>
+            </ul>
+            <div id="controls">
+                <p>Controls:</p> 
+                <div class="control-arrow"><i class="far fa-caret-square-left"></i></div>
+                <div class="control-arrow"><i class="far fa-caret-square-right"></i></div>
+            </div>
         </div>
+        <br>
     </div>
-    <br>
+    
     <img id="pug" src="src/scripts/small.png" hidden>
     <canvas id="game"></canvas>
-
+    <h2 id='difficulty-up'>This game is responsive, so for easier/harder difficulty, Zoom in/out and reload.</h2>
 </body>
 </html>
