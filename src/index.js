@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const header = document.getElementById('header')
 
     canvas.width = window.innerWidth * 0.64;
-    canvas.height = window.innerHeight * 0.64 - header.offsetHeight;
+    canvas.height = window.innerHeight * 0.8 - header.offsetHeight;
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
