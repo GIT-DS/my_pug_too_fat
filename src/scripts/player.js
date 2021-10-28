@@ -158,7 +158,7 @@ class Player{
             right = true;
         } else if(event.key === "ArrowLeft" || event.key === "a"){
             left = true;
-        }
+        } 
     }
 
     keyUp(event){

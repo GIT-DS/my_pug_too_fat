@@ -52,7 +52,7 @@ class Credits{
         window.context.font = "30px Arial";
         window.context.fillStyle = "black"
         window.context.textAlign = "center";
-        window.context.fillText("Start Over", canvas.width / 4 , canvas.height /2 + 78)
+        window.context.fillText("Enter to Start Over", canvas.width / 4 , canvas.height /2 + 78)
         this.y--;
     }
 

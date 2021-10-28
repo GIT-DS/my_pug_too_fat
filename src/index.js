@@ -107,8 +107,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById('game');
     const header = document.getElementById('header')
 
-    canvas.width = window.innerWidth * 0.64;
-    canvas.height = window.innerHeight * 0.8 - header.offsetHeight;
+    const body = document.getElementById('body')
+
+    if(window.innerWidth < 1451){
+        document.body.style.transform = 'scale(' + window.screen.availHeight *0.001 + ')';
+    document.body.style['-o-transform'] = 'scale(' + window.screen.availHeight * 0.001 + ')';
+    document.body.style['-webkit-transform'] = 'scale(' + window.screen.availHeight *0.001 + ')';
+    document.body.style['-moz-transform'] = 'scale(' + window.screen.availHeight *0.001 + ')';
+    }
+
+    canvas.width = 1600;
+    canvas.height = 900;
     let c = canvas.getContext('2d');
     window.context = c;
     window.canvas = canvas;
@@ -133,10 +142,12 @@ document.addEventListener("DOMContentLoaded", () => {
     
     
 
-    let mouseEvent = (event) => musicEventHandler(event)
+    let musicEvent = (event) => musicEventHandler(event)
     let startEvent = (event) => startEventHandler(event)
-    window.canvas.addEventListener("click", startEvent, false)
-    window.canvas.addEventListener("click", mouseEvent, false)
+    // window.canvas.addEventListener("click", startEvent, false)
+    window.addEventListener("keydown", musicEvent, false)
+
+    window.addEventListener('keydown', startEvent, false )
 
     // window.titatic.addEventListener('ended', e => window.epicMusic.play());
 
@@ -147,17 +158,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function startEventHandler(event){
 
-    if (mouseCollision(event, window.startButton)){
-        start = false;
-        game = true;
-        end = false;
+    if(event.key === 'Enter'){
+        if (start === true){
+            start = false;
+            game = true;
+            end = false;
+        } else if (end === true){
+            start = true;
+            game = false;
+            end = false;
+        }
     }
 }
+
 
 function musicEventHandler(event){
 
 
-    if (mouseCollision(event, window.volumeButton)){
+    if(event.key === 'm'){
         if (muted === true){
             vol.src = "src/volOnSmall.png"
             window.epicMusic.muted = false;
@@ -180,7 +198,6 @@ function mouseCollision(event, object){
     let domRect = window.canvas.getBoundingClientRect();
     let mouseX = event.clientX - domRect.x;
     let mouseY = event.clientY - domRect.y;
-
 
 
 
@@ -224,7 +241,7 @@ function animate(){
         window.context.font = "30px Arial";
         window.context.fillStyle = "black"
         window.context.textAlign = "center";
-        window.context.fillText("Start", canvas.width / 2 - 30, canvas.height - 150 + 13)
+        window.context.fillText("Press Enter to Start", canvas.width / 2 - 30, canvas.height - 150 + 13)
     } else if (game === true){
 
         // reset on replay

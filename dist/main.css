@@ -94,6 +94,23 @@ i {
   display: none;
 }
 
+#mute-wrapper {
+  display: flex;
+  align-items: center;
+}
+#mute-wrapper * {
+  padding: 5px;
+}
+#mute-wrapper p {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+#mute {
+  border: 5px solid white;
+  border-radius: 5px;
+}
+
 .control-arrow {
   margin: 10px;
 }
