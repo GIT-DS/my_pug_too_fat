@@ -110,10 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const body = document.getElementById('body')
 
     if(window.innerWidth < 1451){
-        document.body.style.transform = 'scale(' + window.screen.availHeight *0.0005 + ')';
-    document.body.style['-o-transform'] = 'scale(' + window.screen.availHeight * 0.0005 + ')';
-    document.body.style['-webkit-transform'] = 'scale(' + window.screen.availHeight *0.0005 + ')';
-    document.body.style['-moz-transform'] = 'scale(' + window.screen.availHeight *0.0005 + ')';
+        document.body.style.transform = 'scale(' + window.screen.availHeight *0.0008 + ')';
+        document.body.style['-o-transform'] = 'scale(' + window.screen.availHeight * 0.0008 + ')';
+        document.body.style['-webkit-transform'] = 'scale(' + window.screen.availHeight *0.0008 + ')';
+        document.body.style['-moz-transform'] = 'scale(' + window.screen.availHeight *0.0008 + ')';
     }
 
     canvas.width = 1600;
