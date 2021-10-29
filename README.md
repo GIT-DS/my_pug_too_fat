@@ -27,6 +27,56 @@ This application will:
 - Canvas for game render/ drawing
 - HTML/ CSS for other rendering
 
+## Technical Implimentation
+
+# Wind Effect
+
+Every 6 frames/levels, wind is added to create greater difficulty. The wind effect changes the player's X position depending on the direction of the wind.
+```javascript
+// player model
+    windEffect(direction){
+        if (direction === 'left'){
+            this.x -= this.wind
+        } else if (direction === 'right'){
+            this.x += this.wind
+        }
+    }
+```
+
+Wind direction changes on a set interval. To provide a visual cue, I also implemented circles to represent particles in the wind traveling horizontally.
+
+```javascript
+// wind model
+
+    draw(){
+        this.circles.forEach(circle => circle.draw());
+        if (this.timer < 0){
+            this.changeState();
+            this.timer = 500;
+        } else {
+            this.timer--;
+        }
+        this.collision();
+    }
+
+    changeState(){
+        if(this.state === "right"){
+            this.state = "left"
+        } else if (this.state === "left"){
+            this.state = "right"
+        }
+
+        this.circles.forEach(circle => circle.dx = -circle.dx)
+    
+    }
+
+```
+
+
+
+
+
+
 ## Implementation Timeline
 
 <b>Day 1:</b> Plan and set up general file structure. Begin creating game clases. 
