@@ -1,9 +1,14 @@
 # My Pug is Too Fat (give her some exercise)
 
+# [Live](https://git-ds.github.io/my_pug_too_fat/)
+
+![pug1](https://user-images.githubusercontent.com/39077702/139508307-f8f56b19-3a90-4625-a7ed-8a43c6e7a009.png)
+![pug2](https://user-images.githubusercontent.com/39077702/139508308-2dd3e65c-05d6-4def-bbdd-f5d6213dff15.png)
+![pug3](https://user-images.githubusercontent.com/39077702/139508309-27df8e02-49ea-4ce4-994d-13187b1ad018.png)
+
 ## Background
 
 The point of this game is to give my chonky pug some exercise by jumping from platform to platform. Each platform is procedurally generated to ensure it's somewhere within the parabolic curve of my pug's jump. Sounds fun right? SIKE! This game is designed to be frustrating. There will be some *fun* surprises along the way : ^ ) . If you mess up and fall, you could potentially make my pug fall all the way to the bottom. 
-
 
 ## Functionality and MVP
 
