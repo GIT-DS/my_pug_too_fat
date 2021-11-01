@@ -88,7 +88,7 @@ body {
 }
 
 i {
-  font-size: 50px;
+  font-size: 30px;
   color: white;
 }
 
@@ -104,13 +104,14 @@ i {
   padding: 5px;
 }
 #mute-wrapper p {
-  font-size: 26px;
+  font-size: 12px;
   font-weight: bold;
 }
 
 #mute {
-  border: 5px solid white;
+  border: 3px solid white;
   border-radius: 5px;
+  font-size: 10px;
 }
 
 .control-arrow {
@@ -122,7 +123,7 @@ h1 {
 }
 
 h2 {
-  font-size: 50px;
+  font-size: 30px;
 }
 
 canvas {
