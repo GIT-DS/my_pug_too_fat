@@ -77,14 +77,3 @@ Wind direction changes on a set interval. To provide a visual cue, I also implem
 
 
 
-## Implementation Timeline
-
-<b>Day 1:</b> Plan and set up general file structure. Begin creating game clases. 
-
-<b>Day 2:</b> Complete game classes. Render static platforms. Begin creating game logic.
-
-<b>Day 3:</b> Create player class. Set up movement and collision detection.
-
-<b>Day 4:</b> Add in textures & sprites
-
-<b>Day 5:</b> Final testing and gameplay 
